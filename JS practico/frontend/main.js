@@ -1,30 +1,40 @@
 const menuEmail = document.querySelector('.navbar-email');
-const desktopMenu = document.querySelector('.desktop-menu');
+const desktopEmail = document.querySelector('.desktop-menu');
 const menuHamIcon = document.querySelector('.menu');
+const productDetailClose = document.querySelector('.product-detail-close')
 const mobileMenu = document.querySelector('.mobile-menu');
 const carrito = document.querySelector('.shopping-card');
-const aside = document.querySelector('.product-detail');
-const cardsContainer = document.querySelector('.cards-container')
+const shoppingArrow = document.querySelector('.flechita');
+const shoppingAside = document.querySelector('#shoppingCardId');
+const detailProductInfo = document.querySelector('#detailInfo')
+const cardsContainer = document.querySelector('.cards-container');
 const productList = [];
 
 
-menuEmail.addEventListener('click',toggleDesktopMenu);
+menuEmail.addEventListener('click',toggleDesktopEmail);
 menuHamIcon.addEventListener('click',toggleMobileMenu);
-carrito.addEventListener('click', toggleShopping)
+carrito.addEventListener('click', toggleShopping);
+shoppingArrow.addEventListener('click',toggleShopping);
+productDetailClose.addEventListener('click', closeDetail);
 
-function toggleDesktopMenu() {
-    const isAsideOpen = !aside.classList.contains('inactive');
-    if(isAsideOpen){
-        aside.classList.add('inactive'); 
+function toggleDesktopEmail() {
+    const isAsideOpen = !shoppingAside.classList.contains('inactive');
+    const isDetailOpen = !detailProductInfo.classList.contains('inactive');
+
+    if(isAsideOpen || isDetailOpen){
+        shoppingAside.classList.add('inactive'); 
+        detailProductInfo.classList.add('inactive');
     }
-    desktopMenu.classList.toggle('inactive'); //con classlist obtenemos la lista y con toggle le decimos que la ponga o la quite dependiendo la accion anterior
+    desktopEmail.classList.toggle('inactive'); //con classlist obtenemos la lista y con toggle le decimos que la ponga o la quite dependiendo la accion anterior
 }
 
 function toggleMobileMenu() {
-    const isAsideOpen = !aside.classList.contains('inactive');
+    const isAsideOpen = !shoppingAside.classList.contains('inactive');
+    const isDetailOpen = !detailProductInfo.classList.contains('inactive');
 
-    if(isAsideOpen){
-        aside.classList.add('inactive'); 
+    if(isAsideOpen || isDetailOpen){
+        shoppingAside.classList.add('inactive'); 
+        detailProductInfo.classList.add('inactive');
     }
     mobileMenu.classList.toggle('inactive');
     
@@ -32,15 +42,26 @@ function toggleMobileMenu() {
 
 function toggleShopping() {
     const isMobileOpen = !mobileMenu.classList.contains('inactive');
-    const isDesktopOpen = !desktopMenu.classList.contains('inactive');
+    const isDesktopOpen = !desktopEmail.classList.contains('inactive');
+    const isDetailOpen = !detailProductInfo.classList.contains('inactive');
 
-    if(isMobileOpen || isDesktopOpen){
+    if(isMobileOpen || isDesktopOpen || isDetailOpen){
         mobileMenu.classList.add('inactive');
-        desktopMenu.classList.add('inactive');
+        desktopEmail.classList.add('inactive');
+        detailProductInfo.classList.add('inactive');
     } 
-    aside.classList.toggle('inactive');
+    shoppingAside.classList.toggle('inactive');
+}
 
-    
+function openDetail() {
+    shoppingAside.classList.add('inactive');
+    mobileMenu.classList.add('inactive');
+    desktopEmail.classList.add('inactive');
+    detailProductInfo.classList.remove('inactive');
+}
+
+function closeDetail() {
+    detailProductInfo.classList.add('inactive');
 }
 
 productList.push({
@@ -90,6 +111,7 @@ function listP(arr){
         const imgProduct = document.createElement('img');
         imgProduct.classList.add('product-img');
         imgProduct.setAttribute("src", product.Image);
+        imgProduct.addEventListener('click', openDetail);
     
         const productInfo = document.createElement('div');
         productInfo.classList.add('product-info');
